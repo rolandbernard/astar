@@ -1,4 +1,4 @@
-package net.tfobz.astern.gui;
+package com.rolandbernard.astar.gui;
 
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -13,22 +13,23 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import com.rolandbernard.astar.AStar;
+
 import java.awt.Color;
-import net.tfobz.astern.AStern;
 
 @SuppressWarnings("serial")
-public class ASternPlayer extends JPanel {
+public class AStarPlayer extends JPanel {
 	
 	private JTextField txtDistbias;
 	private JSlider sldTimeWait;
 	private JTextArea lblStatus;
 	
-	private AStern as = null;
-	private ASternGui asGui = null;
+	private AStar as = null;
+	private AStarGui asGui = null;
 
 	private volatile boolean running = false;
 	
-	public ASternPlayer(ASternGui gui, AStern as) {
+	public AStarPlayer(AStarGui gui, AStar as) {
 		this.as = as;
 		this.asGui = gui;
 		
@@ -50,8 +51,8 @@ public class ASternPlayer extends JPanel {
 						throw new NumberFormatException(); // Just to get into the right catch
 					this.as.setDistBias(distBias);
 					this.as.setWaitTime(0);
-					AStern.Node[] sel = this.asGui.getSelection();
-					List<AStern.Node> path = this.as.getPathFromTo(sel[0], sel[1]);
+					AStar.Node[] sel = this.asGui.getSelection();
+					List<AStar.Node> path = this.as.getPathFromTo(sel[0], sel[1]);
 					double cost = this.as.getPathCost(path);
 					this.lblStatus.setText("The path costs " + ((int)(cost*10000)/10000.0));
 					this.as.setWaitTime((int)Math.pow(10,this.sldTimeWait.getValue()/250));
@@ -82,8 +83,8 @@ public class ASternPlayer extends JPanel {
 						if(distBias < 0)
 							throw new NumberFormatException(); // Just to get into the right catch
 						this.as.setDistBias(distBias);
-						AStern.Node[] sel = this.asGui.getSelection();
-						List<AStern.Node> path = this.as.getPathFromTo(sel[0], sel[1]);
+						AStar.Node[] sel = this.asGui.getSelection();
+						List<AStar.Node> path = this.as.getPathFromTo(sel[0], sel[1]);
 						double cost = this.as.getPathCost(path);
 						this.lblStatus.setText("The path costs " + ((int)(cost*10000)/10000.0));
 					} catch (NumberFormatException ex) {

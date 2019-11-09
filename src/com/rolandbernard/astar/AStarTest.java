@@ -1,4 +1,4 @@
-package net.tfobz.astern;
+package com.rolandbernard.astar;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,10 +24,10 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.model.Statement;
 
-import net.tfobz.astern.AStern.Node;
+import com.rolandbernard.astar.AStar.Node;
 
 @RunWith(Enclosed.class)
-public class ASternTest {
+public class AStarTest {
 
 	@RunWith(Parameterized.class)
 	public static class TestIllegalArgument{
@@ -52,7 +52,7 @@ public class ASternTest {
 		
 		@Test (expected=IllegalArgumentException.class)
 		public void test() throws IllegalArgumentException, IOException {
-			new AStern(new BufferedReader(new StringReader(this.fileString)));
+			new AStar(new BufferedReader(new StringReader(this.fileString)));
 		}
 	}
 	
@@ -77,7 +77,7 @@ public class ASternTest {
     	
     	@Test(expected = TimeoutException.class)
     	public void givesTimeout() throws InterruptedException, FileNotFoundException, IllegalArgumentException, IOException {
-    		AStern as = new AStern("test.txt");
+    		AStar as = new AStar("test.txt");
     		as.setWaitTime(1000);
     		as.getPathFromTo(as.getNode("start"), as.getNode("end"));
     	}
@@ -85,10 +85,10 @@ public class ASternTest {
 
 	@RunWith(Parameterized.class)
 	public static class TestIllegalArgumentExecution {	
-		private AStern as = null;
+		private AStar as = null;
 		
 		public TestIllegalArgumentExecution(String fileString) throws IllegalArgumentException, IOException {
-			this.as = new AStern(new BufferedReader(new StringReader(fileString)));
+			this.as = new AStar(new BufferedReader(new StringReader(fileString)));
 		}
 		
 		@Parameters
@@ -112,7 +112,7 @@ public class ASternTest {
 	public static class TestNoError {
 		@Test
 		public void testAddNode() {
-			AStern as = new AStern();
+			AStar as = new AStar();
 			
 			Node a = new Node(null, 0, 0);
 			Node b = new Node("", 1, 1);
@@ -134,7 +134,7 @@ public class ASternTest {
 		
 		@Test
 		public void testPathCost() {
-			AStern as = new AStern();
+			AStar as = new AStar();
 			
 			Node a = new Node(null, 0, 0);
 			Node b = new Node(null, 1, 0);
@@ -165,7 +165,7 @@ public class ASternTest {
 		
 		@Test
 		public void testShortestPath() {
-			AStern as = new AStern();
+			AStar as = new AStar();
 			
 			Node a = new Node(null, 0, 0);
 			Node b = new Node(null, 1, 0);
@@ -189,7 +189,7 @@ public class ASternTest {
 		
 		@Test
 		public void testGetNode() {
-			AStern as = new AStern();
+			AStar as = new AStar();
 			
 			Node a = new Node("1", 0, 0);
 			Node b = new Node("2", 1, 0);
@@ -209,14 +209,14 @@ public class ASternTest {
 	
 		@Test
 		public void testLoad() throws IllegalArgumentException, IOException {
-			AStern as = new AStern(new BufferedReader(new StringReader("n start: 0;0\nn end: 1;0\nn : 1;1\nc :1;1 <==> end\nc start =4=> :1;1")));
+			AStar as = new AStar(new BufferedReader(new StringReader("n start: 0;0\nn end: 1;0\nn : 1;1\nc :1;1 <==> end\nc start =4=> :1;1")));
 			
 			assertEquals(5, as.getPathCost(as.getPathFromTo(as.getNode("start"), as.getNode("end"))));
 		}
 		
 		@Test
 		public void testLoadFile() throws FileNotFoundException, IllegalArgumentException, IOException {
-			AStern as = new AStern("graph1.dat");
+			AStar as = new AStar("graph1.dat");
 			assertEquals(1.8, as.getPathCost(as.getPathFromTo(as.getNode("start"), as.getNode("end"))), 0.0001);
 		}
 	}

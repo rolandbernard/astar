@@ -1,8 +1,8 @@
-package net.tfobz.astern.gui;
+package com.rolandbernard.astar.gui;
 
 import javax.swing.JPanel;
 
-import net.tfobz.astern.AStern;
+import com.rolandbernard.astar.AStar;
 
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
@@ -20,12 +20,12 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 @SuppressWarnings("serial")
-public class ASternEditor extends JPanel {
+public class AStarEditor extends JPanel {
 	
-	private AStern as = null;
-	private ASternGui asGui = null;
+	private AStar as = null;
+	private AStarGui asGui = null;
 	
-	public ASternEditor(ASternGui gui, AStern as) {
+	public AStarEditor(AStarGui gui, AStar as) {
 		this.as = as;
 		this.asGui = gui;
 		
@@ -77,7 +77,7 @@ public class ASternEditor extends JPanel {
 		
 		// add button
 		JButton btnAddNode = new JButton("Add node");
-		btnAddNode.addActionListener(e->this.asGui.setEditMode(ASternGui.EditMode.ADD));
+		btnAddNode.addActionListener(e->this.asGui.setEditMode(AStarGui.EditMode.ADD));
 		GridBagConstraints gbc_btnAddNode = new GridBagConstraints();
 		gbc_btnAddNode.gridwidth = 2;
 		gbc_btnAddNode.fill = GridBagConstraints.HORIZONTAL;
@@ -88,7 +88,7 @@ public class ASternEditor extends JPanel {
 		
 		// move button
 		JButton btnMoveNode = new JButton("Move node");
-		btnMoveNode.addActionListener(e->this.asGui.setEditMode(ASternGui.EditMode.MOVE));
+		btnMoveNode.addActionListener(e->this.asGui.setEditMode(AStarGui.EditMode.MOVE));
 		GridBagConstraints gbc_btnMoveNode = new GridBagConstraints();
 		gbc_btnMoveNode.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnMoveNode.gridwidth = 2;
@@ -99,7 +99,7 @@ public class ASternEditor extends JPanel {
 		
 		// delete button
 		JButton btnDeleteNode = new JButton("Delete node");
-		btnDeleteNode.addActionListener(e->this.asGui.setEditMode(ASternGui.EditMode.DEL));
+		btnDeleteNode.addActionListener(e->this.asGui.setEditMode(AStarGui.EditMode.DEL));
 		GridBagConstraints gbc_btnDeleteNode = new GridBagConstraints();
 		gbc_btnDeleteNode.gridwidth = 2;
 		gbc_btnDeleteNode.fill = GridBagConstraints.HORIZONTAL;
@@ -110,7 +110,7 @@ public class ASternEditor extends JPanel {
 		
 		// rename button
 		JButton btnRenameNode = new JButton("Rename node");
-		btnRenameNode.addActionListener(e->this.asGui.setEditMode(ASternGui.EditMode.RENAME));
+		btnRenameNode.addActionListener(e->this.asGui.setEditMode(AStarGui.EditMode.RENAME));
 		GridBagConstraints gbc_btnRenameNode = new GridBagConstraints();
 		gbc_btnRenameNode.gridwidth = 2;
 		gbc_btnRenameNode.insets = new Insets(0, 0, 5, 5);
@@ -131,7 +131,7 @@ public class ASternEditor extends JPanel {
 		
 		// add connection button (automatic cost)
 		JButton btnAuto = new JButton("Auto");
-		btnAuto.addActionListener(e->this.asGui.setEditMode(ASternGui.EditMode.ADDCON));
+		btnAuto.addActionListener(e->this.asGui.setEditMode(AStarGui.EditMode.ADDCON));
 		GridBagConstraints gbc_btnAuto = new GridBagConstraints();
 		gbc_btnAuto.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnAuto.insets = new Insets(0, 0, 5, 5);
@@ -141,7 +141,7 @@ public class ASternEditor extends JPanel {
 		
 		// add connection button (manual cost) 
 		JButton btnManual = new JButton("Manual");
-		btnManual.addActionListener(e->this.asGui.setEditMode(ASternGui.EditMode.ADDCONSPE));
+		btnManual.addActionListener(e->this.asGui.setEditMode(AStarGui.EditMode.ADDCONSPE));
 		GridBagConstraints gbc_btnManual = new GridBagConstraints();
 		gbc_btnManual.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnManual.insets = new Insets(0, 0, 5, 5);
@@ -151,7 +151,7 @@ public class ASternEditor extends JPanel {
 		
 		/// remove connection button
 		JButton btnRemoveConnection = new JButton("Remove connection");
-		btnRemoveConnection.addActionListener(e->this.asGui.setEditMode(ASternGui.EditMode.DELCON));
+		btnRemoveConnection.addActionListener(e->this.asGui.setEditMode(AStarGui.EditMode.DELCON));
 		GridBagConstraints gbc_btnRemoveConnection = new GridBagConstraints();
 		gbc_btnRemoveConnection.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnRemoveConnection.gridwidth = 2;
@@ -164,7 +164,7 @@ public class ASternEditor extends JPanel {
 		JButton btnAddRandomNode = new JButton("Add random node");
 		btnAddRandomNode.addActionListener(e->{
 			this.asGui.setEditMode(null);
-			AStern.Node newNode = new AStern.Node(null, Math.random()*10-5, Math.random()*10-5);
+			AStar.Node newNode = new AStar.Node(null, Math.random()*10-5, Math.random()*10-5);
 			this.as.addNode(newNode);
 		});
 		GridBagConstraints gbc_btnAddRandomNode = new GridBagConstraints();
@@ -179,11 +179,11 @@ public class ASternEditor extends JPanel {
 		JButton btnAddRandCon = new JButton("Add rand. con.");
 		btnAddRandCon.addActionListener(e->{
 			this.asGui.setEditMode(null);
-			Collection<AStern.Node> nodes = this.as.getNodes();
+			Collection<AStar.Node> nodes = this.as.getNodes();
 			int rand = (int) (nodes.size()*Math.random());
-			AStern.Node start = nodes.stream().skip(rand).findFirst().get();
-			AStern.Node[] closest = new AStern.Node[10];
-			for(AStern.Node n : nodes)
+			AStar.Node start = nodes.stream().skip(rand).findFirst().get();
+			AStar.Node[] closest = new AStar.Node[10];
+			for(AStar.Node n : nodes)
 				if(!n.equals(start))
 					for(int i = 0; i < closest.length; i++)
 						if(closest[i] == null || closest[i].distFrom(start) > n.distFrom(start)) {
@@ -196,7 +196,7 @@ public class ASternEditor extends JPanel {
 			while(length < closest.length && closest[length] != null) length++;
 			if(length != 0) {
 				rand = (int) (length*Math.random());
-				AStern.Node end = Arrays.stream(closest).skip(rand).findFirst().get();
+				AStar.Node end = Arrays.stream(closest).skip(rand).findFirst().get();
 				this.as.setConnection(start, end, start.distFrom(end));
 				this.as.setConnection(end, start, start.distFrom(end));
 			}
@@ -214,15 +214,15 @@ public class ASternEditor extends JPanel {
 		btnBuildRnadGraph.addActionListener(e->{
 			this.asGui.setEditMode(null);
 			for(int k = 0; k < 100; k++) {
-				AStern.Node newNode = new AStern.Node(null, Math.random()*10-5, Math.random()*10-5);
+				AStar.Node newNode = new AStar.Node(null, Math.random()*10-5, Math.random()*10-5);
 				this.as.addNode(newNode);	
 			}
 			for(int k = 0; k < 500; k++) {
-				Collection<AStern.Node> nodes = this.as.getNodes();
+				Collection<AStar.Node> nodes = this.as.getNodes();
 				int rand = (int) (nodes.size()*Math.random());
-				AStern.Node start = nodes.stream().skip(rand).findFirst().get();
-				AStern.Node[] closest = new AStern.Node[10];
-				for(AStern.Node n : nodes)
+				AStar.Node start = nodes.stream().skip(rand).findFirst().get();
+				AStar.Node[] closest = new AStar.Node[10];
+				for(AStar.Node n : nodes)
 					if(!n.equals(start))
 						for(int i = 0; i < closest.length; i++)
 							if(closest[i] == null || closest[i].distFrom(start) > n.distFrom(start)) {
@@ -235,7 +235,7 @@ public class ASternEditor extends JPanel {
 				while(length < closest.length && closest[length] != null) length++;
 				if(length != 0) {
 					rand = (int) (length*Math.random());
-					AStern.Node end = Arrays.stream(closest).skip(rand).findFirst().get();
+					AStar.Node end = Arrays.stream(closest).skip(rand).findFirst().get();
 					this.as.setConnection(start, end, start.distFrom(end));
 					this.as.setConnection(end, start, start.distFrom(end));
 				}

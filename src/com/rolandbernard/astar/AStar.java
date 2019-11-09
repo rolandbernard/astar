@@ -1,4 +1,4 @@
-package net.tfobz.astern;
+package com.rolandbernard.astar;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -27,7 +27,7 @@ import java.util.PriorityQueue;
  * Die Klasse ermöglicht es Punkte einzulesen und die minimale distanz zwischen zwei Punktn mittels des
  * A*-Algorithmus zu errechnen
  */
-public class AStern {
+public class AStar {
 	// Variables for saving the graph
 	private Map<Node, Map<Node, Double>> connections;
 	private Collection<Node> nodes;
@@ -152,7 +152,7 @@ public class AStern {
 	/**
 	 * Initialises an empty graph.
 	 */
-	public AStern() {
+	public AStar() {
 		this.nodes = new HashSet<>();
 		this.connections = new HashMap<>();
 	}
@@ -163,7 +163,7 @@ public class AStern {
 	 * @throws IOException
 	 * @throws IllegalArgumentException
 	 */
-	public AStern(BufferedReader in) throws IOException, IllegalArgumentException {
+	public AStar(BufferedReader in) throws IOException, IllegalArgumentException {
 		this();
 		readNodesAndConnections(in);
 	}
@@ -175,7 +175,7 @@ public class AStern {
 	 * @throws IOException
 	 * @throws IllegalArgumentException
 	 */
-	public AStern(String filename) throws FileNotFoundException, IOException, IllegalArgumentException {
+	public AStar(String filename) throws FileNotFoundException, IOException, IllegalArgumentException {
 		this();
 		FileInputStream in = new FileInputStream(filename);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -497,7 +497,7 @@ public class AStern {
 			} else if(!this.dist.containsKey(o2))
 				return -1;
 			else
-				return Double.compare(this.dist.get(o1) + AStern.this.distBias*o1.distFrom(end), this.dist.get(o2) + AStern.this.distBias*o2.distFrom(end));
+				return Double.compare(this.dist.get(o1) + AStar.this.distBias*o1.distFrom(end), this.dist.get(o2) + AStar.this.distBias*o2.distFrom(end));
 		}
 	}
 
@@ -512,20 +512,20 @@ public class AStern {
 			// Draw all nodes normal
 			g2.setColor(new Color(200, 12, 12));
 			for(Node n : this.nodes)
-				g2.fillOval((int)(n.getX()*AStern.GRAPHICS_SCALE) - 5, (int)(n.getY()*AStern.GRAPHICS_SCALE) - 5, 10, 10);
+				g2.fillOval((int)(n.getX()*AStar.GRAPHICS_SCALE) - 5, (int)(n.getY()*AStar.GRAPHICS_SCALE) - 5, 10, 10);
 				
 			// Draw all connections
 			for(Entry<Node, Map<Node, Double>> ent : this.connections.entrySet())
 				for(Entry<Node, Double> con : ent.getValue().entrySet()) {
-					g2.drawLine((int)(ent.getKey().getX()*AStern.GRAPHICS_SCALE), (int)(ent.getKey().getY()*AStern.GRAPHICS_SCALE), 
-							(int)(con.getKey().getX()*AStern.GRAPHICS_SCALE), (int)(con.getKey().getY()*AStern.GRAPHICS_SCALE));
+					g2.drawLine((int)(ent.getKey().getX()*AStar.GRAPHICS_SCALE), (int)(ent.getKey().getY()*AStar.GRAPHICS_SCALE), 
+							(int)(con.getKey().getX()*AStar.GRAPHICS_SCALE), (int)(con.getKey().getY()*AStar.GRAPHICS_SCALE));
 					
 					double dirX = con.getKey().getX() - ent.getKey().getX();
 					double dirY = con.getKey().getY() - ent.getKey().getY();
 					double mag = Math.sqrt(dirX*dirX + dirY*dirY);
 					dirX *= 5/mag;
 					dirY *= 5/mag;		
-					g2.fillOval((int)(con.getKey().getX()*AStern.GRAPHICS_SCALE-dirX)-3, (int)(con.getKey().getY()*AStern.GRAPHICS_SCALE-dirY)-3, 6, 6);
+					g2.fillOval((int)(con.getKey().getX()*AStar.GRAPHICS_SCALE-dirX)-3, (int)(con.getKey().getY()*AStar.GRAPHICS_SCALE-dirY)-3, 6, 6);
 				}
 			
 			// Draw shortest path tree and the nodes of the closed set
@@ -533,9 +533,9 @@ public class AStern {
 				g2.setColor(new Color(12, 12, 200));
 				g2.setStroke(new BasicStroke(3));
 				for(Entry<Node, Node> con : this.prev.entrySet()) {
-					g2.fillOval((int)(con.getKey().getX()*AStern.GRAPHICS_SCALE) - 5, (int)(con.getKey().getY()*AStern.GRAPHICS_SCALE) - 5, 10, 10);
-					g2.drawLine((int)(con.getKey().getX()*AStern.GRAPHICS_SCALE), (int)(con.getKey().getY()*AStern.GRAPHICS_SCALE), 
-							(int)(con.getValue().getX()*AStern.GRAPHICS_SCALE), (int)(con.getValue().getY()*AStern.GRAPHICS_SCALE));
+					g2.fillOval((int)(con.getKey().getX()*AStar.GRAPHICS_SCALE) - 5, (int)(con.getKey().getY()*AStar.GRAPHICS_SCALE) - 5, 10, 10);
+					g2.drawLine((int)(con.getKey().getX()*AStar.GRAPHICS_SCALE), (int)(con.getKey().getY()*AStar.GRAPHICS_SCALE), 
+							(int)(con.getValue().getX()*AStar.GRAPHICS_SCALE), (int)(con.getValue().getY()*AStar.GRAPHICS_SCALE));
 				}
 			}
 			
@@ -543,10 +543,10 @@ public class AStern {
 			if(this.openl != null) {
 				g2.setColor(new Color(200, 200, 200));
 				for(Node n : this.openl)			
-					g2.fillOval((int)(n.getX()*AStern.GRAPHICS_SCALE) - 5, (int)(n.getY()*AStern.GRAPHICS_SCALE) - 5, 10, 10);
+					g2.fillOval((int)(n.getX()*AStar.GRAPHICS_SCALE) - 5, (int)(n.getY()*AStar.GRAPHICS_SCALE) - 5, 10, 10);
 				g2.setColor(new Color(200, 200, 0));
 				if(this.openl.size() > 0) {
-					g2.fillOval((int)(this.openl.peek().getX()*AStern.GRAPHICS_SCALE) - 5, (int)(this.openl.peek().getY()*AStern.GRAPHICS_SCALE) - 5, 10, 10);
+					g2.fillOval((int)(this.openl.peek().getX()*AStar.GRAPHICS_SCALE) - 5, (int)(this.openl.peek().getY()*AStar.GRAPHICS_SCALE) - 5, 10, 10);
 				}
 			}
 			
@@ -555,20 +555,20 @@ public class AStern {
 				g2.setColor(new Color(12, 200, 12));
 				g2.setStroke(new BasicStroke(4));
 				for(int n = 0; n < this.ret.size()-1; n++)
-					g2.drawLine((int)(this.ret.get(n).getX()*AStern.GRAPHICS_SCALE), (int)(this.ret.get(n).getY()*AStern.GRAPHICS_SCALE), 
-							(int)(this.ret.get(n+1).getX()*AStern.GRAPHICS_SCALE), (int)(this.ret.get(n+1).getY()*AStern.GRAPHICS_SCALE));
+					g2.drawLine((int)(this.ret.get(n).getX()*AStar.GRAPHICS_SCALE), (int)(this.ret.get(n).getY()*AStar.GRAPHICS_SCALE), 
+							(int)(this.ret.get(n+1).getX()*AStar.GRAPHICS_SCALE), (int)(this.ret.get(n+1).getY()*AStar.GRAPHICS_SCALE));
 			}
 			// Draw all Nodes highlighted
 			g2.setColor(new Color(0, 255, 0));
 			for(Node n : this.nodes)
 				if(n.getHighlight())
-					g2.fillOval((int)(n.getX()*AStern.GRAPHICS_SCALE) - 5, (int)(n.getY()*AStern.GRAPHICS_SCALE) - 5, 10, 10);		
+					g2.fillOval((int)(n.getX()*AStar.GRAPHICS_SCALE) - 5, (int)(n.getY()*AStar.GRAPHICS_SCALE) - 5, 10, 10);		
 				
 			// Draw all names
 			g2.setColor(new Color(150,150,150));
 			for(Node n : this.nodes)
 				if(n.getName() != null)
-					g2.drawString(n.getName(), (int)(n.getX()*AStern.GRAPHICS_SCALE), (int)(n.getY()*AStern.GRAPHICS_SCALE));
+					g2.drawString(n.getName(), (int)(n.getX()*AStar.GRAPHICS_SCALE), (int)(n.getY()*AStar.GRAPHICS_SCALE));
 		}
 	}
 	
