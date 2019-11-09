@@ -545,7 +545,9 @@ public class AStern {
 				for(Node n : this.openl)			
 					g2.fillOval((int)(n.getX()*AStern.GRAPHICS_SCALE) - 5, (int)(n.getY()*AStern.GRAPHICS_SCALE) - 5, 10, 10);
 				g2.setColor(new Color(200, 200, 0));
-				g2.fillOval((int)(this.openl.peek().getX()*AStern.GRAPHICS_SCALE) - 5, (int)(this.openl.peek().getY()*AStern.GRAPHICS_SCALE) - 5, 10, 10);
+				if(this.openl.size() > 0) {
+					g2.fillOval((int)(this.openl.peek().getX()*AStern.GRAPHICS_SCALE) - 5, (int)(this.openl.peek().getY()*AStern.GRAPHICS_SCALE) - 5, 10, 10);
+				}
 			}
 			
 			// Draws the fastest path
